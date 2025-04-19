@@ -40,6 +40,8 @@ export default function SimuladorBlackjackMultiplayer() {
   const [mensagem, setMensagem] = useState('Clique em "Jogar" para iniciar');
   const [fim, setFim] = useState(false);
   const [resultados, setResultados] = useState([]);
+  const [dealerRevelado, setDealerRevelado] = useState(false);
+  const [estourados, setEstourados] = useState([false, false, false, false, false]);
 
   const distribuir = () => {
     const novoDeck = [...cartas].sort(() => 0.5 - Math.random());
@@ -57,10 +59,12 @@ export default function SimuladorBlackjackMultiplayer() {
     setMensagem('Vez do Jogador 1');
     setFim(false);
     setResultados([]);
+    setDealerRevelado(false);
+    setEstourados([false, false, false, false, false]);
   };
 
   const pedirCarta = () => {
-    if (fim) return;
+    if (fim || estourados[vez]) return;
     const novaCarta = deck.pop();
     const novasMaos = [...jogadores];
     novasMaos[vez].push(novaCarta);
@@ -68,6 +72,9 @@ export default function SimuladorBlackjackMultiplayer() {
     setDeck([...deck]);
     const valor = calcularValor(novasMaos[vez]);
     if (valor > 21) {
+      const novaEstourados = [...estourados];
+      novaEstourados[vez] = true;
+      setEstourados(novaEstourados);
       avancarJogador();
     }
   };
@@ -88,9 +95,12 @@ export default function SimuladorBlackjackMultiplayer() {
   const jogarDealer = () => {
     let novaMaoDealer = [...dealer];
     let novoDeck = [...deck];
+    setDealerRevelado(true);
+
     while (calcularValor(novaMaoDealer) < 17) {
       novaMaoDealer.push(novoDeck.pop());
     }
+
     setDealer(novaMaoDealer);
     setDeck(novoDeck);
 
@@ -116,10 +126,14 @@ export default function SimuladorBlackjackMultiplayer() {
       <div className="dealer">
         <h2>Dealer</h2>
         <div className="cartas">
-          {dealer.map((carta, i) => (
-            <img key={i} src={`/cards/${carta}.png`} alt={carta} />
-          ))}
+          {dealer.map((carta, i) => {
+            if (!dealerRevelado && i === 1) {
+              return <img key={i} src="/cards/back.png" alt="carta virada" />;
+            }
+            return <img key={i} src={`/cards/${carta}.png`} alt={carta} />;
+          })}
         </div>
+        {dealerRevelado && <p>Total: {calcularValor(dealer)}</p>}
       </div>
 
       <div className="jogadores">
@@ -133,12 +147,13 @@ export default function SimuladorBlackjackMultiplayer() {
                 <img key={j} src={`/cards/${carta}.png`} alt={carta} />
               ))}
             </div>
+            <p>Total: {calcularValor(mao)}</p>
           </div>
         ))}
       </div>
 
       <div className="buttons" style={{ marginTop: 20 }}>
-        {!fim && (
+        {!fim && !estourados[vez] && (
           <>
             <button onClick={pedirCarta}>Pedir carta</button>
             <button onClick={parar}>Parar</button>
