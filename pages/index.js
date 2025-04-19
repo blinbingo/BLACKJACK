@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import '../styles/globals.css';
+
 
 export default function Home() {
   const [playerHand, setPlayerHand] = useState([]);
