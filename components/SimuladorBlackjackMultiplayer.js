@@ -143,7 +143,6 @@ export default function SimuladorBlackjackMultiplayer() {
         <h2>Dealer</h2>
         <div className="cartas">
           {dealer.map((carta, i) => {
-            if (!carta) return null;
             if (!dealerRevelado && i === 1) {
               return <img key={i} src="/cards/back.png" alt="carta virada" />;
             }
@@ -160,11 +159,11 @@ export default function SimuladorBlackjackMultiplayer() {
               Jogador {i + 1}
             </h3>
             <div className="cartas">
-              {mao.map((carta, j) => (
-              carta ? (
-                <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
-              ) : null
-            ))}
+              {mao.map((carta, j) => {
+  return carta ? (
+    <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
+  ) : null;
+})}
                 <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
               ))}
             </div>
