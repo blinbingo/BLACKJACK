@@ -46,7 +46,7 @@ export default function SimuladorBlackjackMultiplayer() {
   const [estourados, setEstourados] = useState([false, false, false, false, false]);
 
   const distribuir = () => {
-    const novoDeck = [...cartas].sort(() => 0.5 - Math.random());
+    const novoDeck = [...cartas].map(c => c + '.png').sort(() => 0.5 - Math.random());
     const novasMaos = [[], [], [], [], []];
     for (let i = 0; i < 2; i++) {
       for (let j = 0; j < 5; j++) {
