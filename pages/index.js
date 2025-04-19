@@ -1,7 +1,6 @@
 
-import MesaBlackjack from '../components/MesaBlackjack'
-
+import SimuladorBlackjack from '../components/SimuladorBlackjack'
 
 export default function Home() {
-  return <MesaBlackjack />
+  return <SimuladorBlackjack />
 }
