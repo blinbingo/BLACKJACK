@@ -19,8 +19,9 @@ function calcularValor(mao) {
   let ases = 0;
 
   for (let carta of mao) {
+    if (!carta) continue;
     const rank = carta.slice(0, -1);
-    total += valores[rank];
+    total += valores[rank] || 0;
     if (rank === 'A') ases++;
   }
 
