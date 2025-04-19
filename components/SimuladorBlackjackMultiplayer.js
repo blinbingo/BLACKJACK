@@ -20,6 +20,7 @@ const cartasBase = [
 const naipes = ['H', 'D', 'S', 'C'];
 
 const criarBaralho = () => {
+            if (!carta) return null;
   const deck = [];
   for (let naipe of naipes) {
     for (let carta of cartasBase) {
@@ -60,6 +61,7 @@ export default function SimuladorBlackjackMultiplayer() {
   const [estourados, setEstourados] = useState([false, false, false, false, false]);
 
   const distribuir = () => {
+            if (!carta) return null;
     const novoDeck = criarBaralho();
     const novasMaos = [[], [], [], [], []];
     for (let i = 0; i < 2; i++) {
@@ -80,6 +82,7 @@ export default function SimuladorBlackjackMultiplayer() {
   };
 
   const pedirCarta = () => {
+            if (!carta) return null;
     if (fim || estourados[vez]) return;
     const novaCarta = deck.pop();
     const novasMaos = [...jogadores];
@@ -96,10 +99,12 @@ export default function SimuladorBlackjackMultiplayer() {
   };
 
   const parar = () => {
+            if (!carta) return null;
     avancarJogador();
   };
 
   const avancarJogador = () => {
+            if (!carta) return null;
     if (vez < 4) {
       setVez(vez + 1);
       setMensagem(`Vez do Jogador ${vez + 2}`);
@@ -109,6 +114,7 @@ export default function SimuladorBlackjackMultiplayer() {
   };
 
   const jogarDealer = () => {
+            if (!carta) return null;
     let novaMaoDealer = [...dealer];
     let novoDeck = [...deck];
     setDealerRevelado(true);
@@ -121,6 +127,7 @@ export default function SimuladorBlackjackMultiplayer() {
     setDeck(novoDeck);
 
     const resultadoFinal = jogadores.map((mao, i) => {
+            if (!carta) return null;
       const vJog = calcularValor(mao);
       const vDeal = calcularValor(novaMaoDealer);
       if (vJog > 21) return `Jogador ${i + 1} estourou`;
@@ -143,6 +150,7 @@ export default function SimuladorBlackjackMultiplayer() {
         <h2>Dealer</h2>
         <div className="cartas">
           {dealer.map((carta, i) => {
+            if (!carta) return null;
             if (!dealerRevelado && i === 1) {
               return <img key={i} src="/cards/back.png" alt="carta virada" />;
             }
@@ -160,6 +168,7 @@ export default function SimuladorBlackjackMultiplayer() {
             </h3>
             <div className="cartas">
               {mao.map((carta, j) => (
+              carta ?
                 <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
               ))}
             </div>
