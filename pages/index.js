@@ -1,6 +1,6 @@
 
-import SimuladorBlackjack from '../components/SimuladorBlackjack'
+import SimuladorBlackjackMultiplayer from '../components/SimuladorBlackjackMultiplayer'
 
 export default function Home() {
-  return <SimuladorBlackjack />
+  return <SimuladorBlackjackMultiplayer />
 }
