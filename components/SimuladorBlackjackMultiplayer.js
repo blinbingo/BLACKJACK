@@ -159,11 +159,7 @@ export default function SimuladorBlackjackMultiplayer() {
               Jogador {i + 1}
             </h3>
             <div className="cartas">
-              {mao.map((carta, j) => {
-  return carta ? (
-    <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
-  ) : null;
-})}
+              {mao.map((carta, j) => (
                 <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
               ))}
             </div>
