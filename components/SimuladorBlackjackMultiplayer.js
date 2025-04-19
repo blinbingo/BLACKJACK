@@ -20,7 +20,8 @@ function calcularValor(mao) {
 
   for (let carta of mao) {
     if (!carta) continue;
-    const rank = carta.slice(0, -1);
+    const clean = carta.replace('.png', '');
+    const rank = clean.slice(0, -1);
     total += valores[rank] || 0;
     if (rank === 'A') ases++;
   }
