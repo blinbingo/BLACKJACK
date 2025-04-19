@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  background-color: #0f172a;
+  color: white;
+  font-family: sans-serif;
+}
+
+.mesa {
+  text-align: center;
+  padding: 20px;
+}
+
+.cartas {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.cartas img {
+  width: 50px;
+  height: 75px;
+  border-radius: 4px;
+  box-shadow: 0 0 8px #22c55e;
+}
+
+.jogador, .dealer {
+  margin-bottom: 30px;
+}
