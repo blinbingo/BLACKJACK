@@ -1,36 +1,49 @@
 
 import { useState } from 'react';
 
-const cartas = [
-  '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '10H', 'JH', 'QH', 'KH', 'AH',
-  '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '10D', 'JD', 'QD', 'KD', 'AD',
-  '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '10S', 'JS', 'QS', 'KS', 'AS',
-  '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '10C', 'JC', 'QC', 'KC', 'AC',
+const cartasBase = [
+  { nome: '2', valor: 2 },
+  { nome: '3', valor: 3 },
+  { nome: '4', valor: 4 },
+  { nome: '5', valor: 5 },
+  { nome: '6', valor: 6 },
+  { nome: '7', valor: 7 },
+  { nome: '8', valor: 8 },
+  { nome: '9', valor: 9 },
+  { nome: '10', valor: 10 },
+  { nome: 'J', valor: 10 },
+  { nome: 'Q', valor: 10 },
+  { nome: 'K', valor: 10 },
+  { nome: 'A', valor: 11 },
 ];
 
-const valores = {
-  '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
-  '7': 7, '8': 8, '9': 9, '10': 10,
-  'J': 10, 'Q': 10, 'K': 10, 'A': 11,
+const naipes = ['H', 'D', 'S', 'C'];
+
+const criarBaralho = () => {
+  const deck = [];
+  for (let naipe of naipes) {
+    for (let carta of cartasBase) {
+      deck.push({
+        nome: carta.nome + naipe,
+        valor: carta.valor,
+        imagem: `${carta.nome}${naipe}.png`,
+      });
+    }
+  }
+  return deck.sort(() => 0.5 - Math.random());
 };
 
 function calcularValor(mao) {
   let total = 0;
   let ases = 0;
-
   for (let carta of mao) {
-    if (!carta) continue;
-    const clean = carta.replace('.png', '');
-    const rank = clean.slice(0, -1);
-    total += valores[rank] || 0;
-    if (rank === 'A') ases++;
+    total += carta.valor;
+    if (carta.nome.startsWith('A')) ases++;
   }
-
   while (total > 21 && ases > 0) {
     total -= 10;
     ases--;
   }
-
   return total;
 }
 
@@ -46,7 +59,7 @@ export default function SimuladorBlackjackMultiplayer() {
   const [estourados, setEstourados] = useState([false, false, false, false, false]);
 
   const distribuir = () => {
-    const novoDeck = [...cartas].map(c => c + '.png').sort(() => 0.5 - Math.random());
+    const novoDeck = criarBaralho();
     const novasMaos = [[], [], [], [], []];
     for (let i = 0; i < 2; i++) {
       for (let j = 0; j < 5; j++) {
@@ -132,7 +145,7 @@ export default function SimuladorBlackjackMultiplayer() {
             if (!dealerRevelado && i === 1) {
               return <img key={i} src="/cards/back.png" alt="carta virada" />;
             }
-            return <img key={i} src={`/cards/${carta}.png`} alt={carta} />;
+            return <img key={i} src={`/cards/${carta.imagem}`} alt={carta.nome} />;
           })}
         </div>
         {dealerRevelado && <p>Total: {calcularValor(dealer)}</p>}
@@ -146,7 +159,7 @@ export default function SimuladorBlackjackMultiplayer() {
             </h3>
             <div className="cartas">
               {mao.map((carta, j) => (
-                <img key={j} src={`/cards/${carta}.png`} alt={carta} />
+                <img key={j} src={`/cards/${carta.imagem}`} alt={carta.nome} />
               ))}
             </div>
             <p>Total: {calcularValor(mao)}</p>
